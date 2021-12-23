@@ -1,0 +1,21 @@
+spring.datasource.url= jdbc:postgresql://localhost:5432/tank-admin-db
+spring.datasource.username =
+spring.datasource.password =
+
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation = true
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+
+# Hibernate ddl auto (create, create-drop, validate, update)
+spring.jpa.hibernate.ddl-auto = update
+
+# App Properties
+tank.app.jwtSecret = tankAdminSecretKey
+tank.app.jwtExpirationMs = 86400000
+
+#Google Analytics Report v4
+lm.google.analytics.view.id =
+lm.google.analytics.key.file.location = src/main/resources/static/lm-google-api-key.json
+
+# Unas API Keys
+unas.lm.api.key =
+arukereso.lm.api.key =
