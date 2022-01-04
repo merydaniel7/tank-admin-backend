@@ -10,9 +10,9 @@ import com.tank.tankadminbackend.models.facebook.FacebookAdCost;
 
 public class FacebookService {
     private float sumAdCoast;
-    private String accessToken;
-    private String appSecret;
-    private String adAccountId;
+    private final String accessToken;
+    private final String appSecret;
+    private final String adAccountId;
 
 
     public FacebookService(String accessToken, String appSecret, String adAccountId) {
