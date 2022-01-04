@@ -1,6 +1,8 @@
-package com.tank.tankadminbackend.services;
+package com.tank.tankadminbackend.services.unas;
 
 import com.tank.tankadminbackend.models.unas.order.*;
+import com.tank.tankadminbackend.services.unas.UnasGetAuthTokenService;
+import com.tank.tankadminbackend.services.unas.UnasGetOrderService;
 
 import java.io.IOException;
 import java.util.List;
@@ -93,7 +95,6 @@ public class GetDailyProfitOnProductsService {
                                         sumPurchasePrice != 0) {
                                     netProfit += sum - sumPurchasePrice;
                                 }
-
                             }
                     }
                 }
