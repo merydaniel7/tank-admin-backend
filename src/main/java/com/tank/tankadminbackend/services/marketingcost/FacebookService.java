@@ -1,4 +1,4 @@
-package com.tank.tankadminbackend.services;
+package com.tank.tankadminbackend.services.marketingcost;
 
 import com.facebook.ads.sdk.APIContext;
 import com.facebook.ads.sdk.APINodeList;

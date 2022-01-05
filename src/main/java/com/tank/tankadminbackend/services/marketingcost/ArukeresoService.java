@@ -1,4 +1,4 @@
-package com.tank.tankadminbackend.services;
+package com.tank.tankadminbackend.services.marketingcost;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tank.tankadminbackend.models.arukereso.ArukeresoHashCode;
