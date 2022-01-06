@@ -6,8 +6,12 @@ import com.facebook.ads.sdk.AdAccount;
 import com.facebook.ads.sdk.AdsInsights;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tank.tankadminbackend.models.facebook.FacebookAdCost;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FacebookService {
     private float sumAdCoast;
     private final String accessToken;
@@ -23,7 +27,7 @@ public class FacebookService {
     }
 
 
-    private float getSumOfAdCost(String date) {
+    public float getSumOfAdCost(String date) {
         String timeRange = "{'since':'" + date + "','until':'" + date + "'}";
         APIContext context = new APIContext(
                 accessToken,

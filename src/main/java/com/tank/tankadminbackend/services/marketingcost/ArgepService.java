@@ -6,6 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ArgepService {
     private float sumAdCoast;
     private final String shop;
@@ -37,7 +43,22 @@ public class ArgepService {
         return new ChromeDriver(options);
     }
 
-    private float getSumOfAdCost() {
+
+    private void getCost(WebDriver driver, String date) {
+        WebElement table = driver.findElement(By.className("clicksAndVisitDetails"));
+        List<WebElement> dateRows =  table.findElements(By.tagName("tr"));
+        for (WebElement row : dateRows) {
+            List<WebElement> columns = row.findElements(By.tagName("td"));
+            if (Objects.equals(columns.get(1).getText(), date)) {
+                String cost = columns.get(3).getText().replaceAll("\\D+","");
+                sumAdCoast += Integer.parseInt(cost);
+                break;
+            }
+        }
+    }
+
+
+    public float getSumOfAdCost(LocalDate date) {
         List<Integer> indices = new ArrayList<>();
         WebDriver driver = getDriver();
         driver.get("https://stats.guenstiger.de/p01default.aspx?lan=HU");
@@ -50,14 +71,11 @@ public class ArgepService {
         WebElement loginButton = driver.findElements(By.className("tableheader")).get(2).findElement(By.tagName("input"));
         loginButton.click();
 
-        LocalDate currentDate = LocalDate.now();
-        LocalDate yesterday = currentDate.minusDays(1);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd.");
-        String date = formatter.format(yesterday);
+        String yesterday = formatter.format(date);
 
-        int year = yesterday.getYear();
-        int month = yesterday.getMonth().getValue();
+        int year = date.getYear();
+        int month = date.getMonth().getValue();
 
         driver.get("https://stats.guenstiger.de/p02main.aspx?view=stat&ltype=M&year="+year+"&month="+month);
 
@@ -75,23 +93,9 @@ public class ArgepService {
             dropdown = new Select(driver.findElement(By.tagName("select")));
             elements = dropdown.getOptions();
             elements.get(i).click();
-            getCost(driver, date);
+            getCost(driver, yesterday);
         }
 
         return sumAdCoast;
     }
-
-    private void getCost(WebDriver driver, String date) {
-        WebElement table = driver.findElement(By.className("clicksAndVisitDetails"));
-        List<WebElement> dateRows =  table.findElements(By.tagName("tr"));
-        for (WebElement row : dateRows) {
-            List<WebElement> columns = row.findElements(By.tagName("td"));
-            if (Objects.equals(columns.get(1).getText(), date)) {
-                String cost = columns.get(3).getText().replaceAll("\\D+","");
-                sumAdCoast += Integer.parseInt(cost);
-                break;
-            }
-        }
-    }
-
 }

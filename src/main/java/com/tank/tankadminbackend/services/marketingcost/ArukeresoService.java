@@ -2,6 +2,9 @@ package com.tank.tankadminbackend.services.marketingcost;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tank.tankadminbackend.models.arukereso.ArukeresoHashCode;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ArukeresoService {
     private final String arukeresoApiKey;
     private float sumAdCoast;
@@ -48,7 +54,7 @@ public class ArukeresoService {
     }
 
 
-    String getArukeresoHashCode(String date) throws IOException, InterruptedException {
+    private String getArukeresoHashCode(String date) throws IOException, InterruptedException {
         String response = sendGetHashCodeRequest(date);
         ObjectMapper mapper = new ObjectMapper();
         ArukeresoHashCode arukeresoHashCode = mapper.readValue(response, ArukeresoHashCode.class);
@@ -57,7 +63,7 @@ public class ArukeresoService {
     }
 
 
-    List<String> getArukeresoReport(String arukeresoHashCode) throws IOException {
+    private List<String> getArukeresoReport(String arukeresoHashCode) throws IOException {
 
         URL url = new URL("https://ppapi.arukereso.com/v1.0/Stat/Download?Hash=" + arukeresoHashCode);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -83,7 +89,9 @@ public class ArukeresoService {
     }
 
 
-    private float getSumOfAdCost(List<String> report) {
+    public float getSumOfAdCost(String date) throws IOException, InterruptedException {
+        String hashCode = getArukeresoHashCode(date);
+        List<String> report = getArukeresoReport(hashCode);
         for (int i = 1; i < report.size() - 6; i++) {
             String[] attributes = report.get(i).split(";");
             sumAdCoast += Float.parseFloat(attributes[3]) / 1.27;

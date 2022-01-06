@@ -26,8 +26,13 @@ import com.google.api.services.analyticsreporting.v4.model.MetricHeaderEntry;
 import com.google.api.services.analyticsreporting.v4.model.Report;
 import com.google.api.services.analyticsreporting.v4.model.ReportRequest;
 import com.google.api.services.analyticsreporting.v4.model.ReportRow;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class GoogleAnalyticsService {
     private final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private final String VIEW_ID;
@@ -57,11 +62,12 @@ public class GoogleAnalyticsService {
     }
 
 
-    private GetReportsResponse getAdCostReport(AnalyticsReporting service) throws IOException {
+    private GetReportsResponse getAdCostReport(AnalyticsReporting service, String date) throws IOException {
         // Create the DateRange object.
         DateRange dateRange = new DateRange();
-        dateRange.setStartDate("yesterday");
-        dateRange.setEndDate("yesterday");
+        // Use yesterday
+        dateRange.setStartDate(date);
+        dateRange.setEndDate(date);
 
         // Create the Metrics object.
         Metric sessions = new Metric()
@@ -91,9 +97,9 @@ public class GoogleAnalyticsService {
     }
 
 
-    private float getSumOfAdCost() throws GeneralSecurityException, IOException {
+    public float getSumOfAdCost(String date) throws GeneralSecurityException, IOException {
         AnalyticsReporting service = initializeAnalyticsReporting();
-        GetReportsResponse response = getAdCostReport(service);
+        GetReportsResponse response = getAdCostReport(service, date);
 
         for (Report report: response.getReports()) {
             ColumnHeader header = report.getColumnHeader();
@@ -118,7 +124,7 @@ public class GoogleAnalyticsService {
     }
 
 
-    private void printResponse(GetReportsResponse response) {
+    public void printResponse(GetReportsResponse response) {
 
         for (Report report: response.getReports()) {
             ColumnHeader header = report.getColumnHeader();
