@@ -1,35 +1,35 @@
 package com.tank.tankadminbackend.services.unas;
 
 import com.tank.tankadminbackend.models.unas.order.*;
-import com.tank.tankadminbackend.services.unas.UnasGetAuthTokenService;
-import com.tank.tankadminbackend.services.unas.UnasGetOrderService;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class GetDailyProfitOnProductsService {
+
+public class DailyProfitOnProductsService {
     private final float MIN_SHIPPING_COST;
     private float netProfit;
+    private final String unasApiKey;
 
 
-    public GetDailyProfitOnProductsService() {
-        this.netProfit = 0;
+    public DailyProfitOnProductsService(String unasApiKey) {
+        this.unasApiKey = unasApiKey;
         this.MIN_SHIPPING_COST = 1050;
     }
 
-    private float getDailyProfitOnProducts(String date, String apiKey) throws IOException {
-        UnasGetAuthTokenService unasGetAuthTokenService = new UnasGetAuthTokenService(apiKey);
-        String token = unasGetAuthTokenService.getAuthToken();
-        UnasGetOrderService unasGetOrderService = new UnasGetOrderService();
-        List<Order> openNormalOrders = unasGetOrderService.getOrders(token, OrderType.open_normal.toString(), date);
-        List<Order> closedOkOrders = unasGetOrderService.getOrders(token, OrderType.close_ok.toString(), date);
+    private float getDailyProfitOnProducts(String date) throws IOException {
+        netProfit = 0;
+        /*UnasGetAuthTokenService unasGetAuthTokenService = new UnasGetAuthTokenService(apiKey);
+        String token = unasGetAuthTokenService.getAuthToken();*/
+        UnasOrderService unasOrderService = new UnasOrderService();
+        List<Order> openNormalOrders = unasOrderService.getOrders(unasApiKey, OrderType.open_normal.toString(), date);
+        List<Order> closedOkOrders = unasOrderService.getOrders(unasApiKey, OrderType.close_ok.toString(), date);
         getProfitOnOrders(openNormalOrders);
         getProfitOnOrders(closedOkOrders);
         return netProfit;
     }
 
-    private void getProfitOnOrders( List<Order> orders) {
+    private void getProfitOnOrders(List<Order> orders) {
         for (Order order : orders) {
             Customer customer = order.getCustomer();
             Contact contact = customer.getContact();

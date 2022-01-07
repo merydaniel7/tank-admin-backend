@@ -11,7 +11,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-public class UnasGetOrderService {
+public class UnasOrderService {
 
     private String sendGetOrderRequest(String token, String type, String date) throws IOException {
         String xmlRequest = "<?xml version='1.0' encoding='UTF-8' ?><Params><Status>"

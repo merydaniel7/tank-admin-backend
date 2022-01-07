@@ -2,6 +2,7 @@ package com.tank.tankadminbackend.services.unas;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.tank.tankadminbackend.models.unas.auth.Login;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +11,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class UnasGetAuthTokenService {
+
+public class UnasAuthTokenService {
     private final String unasApiKey;
 
-    public UnasGetAuthTokenService(String unasApiKey1) {
+    public UnasAuthTokenService(String unasApiKey1) {
         this.unasApiKey = unasApiKey1;
     }
 
