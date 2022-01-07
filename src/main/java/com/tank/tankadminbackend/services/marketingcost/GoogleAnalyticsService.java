@@ -74,14 +74,14 @@ public class GoogleAnalyticsService {
                 .setExpression("ga:adCost")
                 .setAlias("cost");
 
-        Dimension pageTitle = new Dimension().setName("ga:adGroup");
+        //Dimension pageTitle = new Dimension().setName("ga:adGroup");
 
         // Create the ReportRequest object.
         ReportRequest request = new ReportRequest()
                 .setViewId(VIEW_ID)
                 .setDateRanges(List.of(dateRange))
-                .setMetrics(List.of(sessions))
-                .setDimensions(List.of(pageTitle));
+                .setMetrics(List.of(sessions));
+                //.setDimensions(List.of(pageTitle));
 
         ArrayList<ReportRequest> requests = new ArrayList<>();
         requests.add(request);
