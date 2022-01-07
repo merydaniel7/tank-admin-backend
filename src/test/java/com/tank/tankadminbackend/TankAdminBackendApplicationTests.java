@@ -85,6 +85,6 @@ class TankAdminBackendApplicationTests {
         ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
         GoogleAnalyticsService googleAnalyticsService = context.getBean(GoogleAnalyticsService.class, googleKeyFileLocation, googleViewId, "lm");
         float adCost = googleAnalyticsService.getSumOfAdCost(date);
-        assertEquals(15103.984375, adCost);
+        assertEquals(20454.353515625, adCost);
     }
 }
