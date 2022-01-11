@@ -1,4 +1,4 @@
-package com.tank.tankadminbackend.models;
+package com.tank.tankadminbackend.models.user;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

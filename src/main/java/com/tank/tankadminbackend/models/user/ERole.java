@@ -1,4 +1,4 @@
-package com.tank.tankadminbackend.models;
+package com.tank.tankadminbackend.models.user;
 
 public enum ERole {
     ROLE_USER,
