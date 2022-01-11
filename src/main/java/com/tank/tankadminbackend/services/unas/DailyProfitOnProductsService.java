@@ -1,11 +1,16 @@
 package com.tank.tankadminbackend.services.unas;
 
 import com.tank.tankadminbackend.models.unas.order.*;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DailyProfitOnProductsService {
     private final float MIN_SHIPPING_COST;
     private float netProfit;
@@ -17,15 +22,20 @@ public class DailyProfitOnProductsService {
         this.MIN_SHIPPING_COST = 1050;
     }
 
-    private float getDailyProfitOnProducts(String date) throws IOException {
+    public float getDailyProfitOnProducts(String date) throws IOException {
         netProfit = 0;
-        /*UnasGetAuthTokenService unasGetAuthTokenService = new UnasGetAuthTokenService(apiKey);
-        String token = unasGetAuthTokenService.getAuthToken();*/
+        UnasAuthTokenService unasGetAuthTokenService = new UnasAuthTokenService();
+        String token = unasGetAuthTokenService.getAuthToken(unasApiKey);
         UnasOrderService unasOrderService = new UnasOrderService();
-        List<Order> openNormalOrders = unasOrderService.getOrders(unasApiKey, OrderType.open_normal.toString(), date);
-        List<Order> closedOkOrders = unasOrderService.getOrders(unasApiKey, OrderType.close_ok.toString(), date);
-        getProfitOnOrders(openNormalOrders);
-        getProfitOnOrders(closedOkOrders);
+        List<Order> openNormalOrders = unasOrderService.getOrders(token, OrderType.open_normal.toString(), date);
+        List<Order> closedOkOrders = unasOrderService.getOrders(token, OrderType.close_ok.toString(), date);
+        if (openNormalOrders != null) {
+            getProfitOnOrders(openNormalOrders);
+        }
+        if (closedOkOrders != null) {
+            getProfitOnOrders(closedOkOrders);
+        }
+
         return netProfit;
     }
 
@@ -35,6 +45,7 @@ public class DailyProfitOnProductsService {
             Contact contact = customer.getContact();
             String customerName = contact.getName();
             String shippingName = order.getShipping().getName();
+            String payment = order.getPayment().getStatus();
             float weight = order.getWeight();
             String source;
             float netPrice;
@@ -42,7 +53,7 @@ public class DailyProfitOnProductsService {
             float sum;
             float sumPurchasePrice;
 
-            if (!Objects.equals(customerName, "TANK Kft.")) {
+            if (!Objects.equals(payment, "unpaid") && !Objects.equals(customerName, "TANK Kft.")) {
                 List<Item> items = List.of(order.getItems());
 
                 for (Item item : items) {
@@ -91,7 +102,7 @@ public class DailyProfitOnProductsService {
                                 if (!Objects.equals(source, "") ||
                                         !Objects.equals(source, "nincs") ||
                                         !item.getId().contains("RRRR") ||
-                                        !item.getId().contains("XXX") ||
+                                        !item.getId().contains("XXXX") ||
                                         sumPurchasePrice != 0) {
                                     netProfit += sum - sumPurchasePrice;
                                 }

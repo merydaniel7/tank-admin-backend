@@ -1,7 +1,9 @@
 package com.tank.tankadminbackend.services.unas;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.tank.tankadminbackend.models.unas.order.*;
+import com.tank.tankadminbackend.models.unas.order.Order;
+import com.tank.tankadminbackend.models.unas.order.Orders;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+
+@Component
 public class UnasOrderService {
 
     private String sendGetOrderRequest(String token, String type, String date) throws IOException {
@@ -50,9 +54,13 @@ public class UnasOrderService {
     }
 
 
-    List<Order> getOrders(String token, String type, String date) throws IOException {
+    public List<Order> getOrders(String token, String type, String date) throws IOException {
         String response = sendGetOrderRequest(token, type, date);
         XmlMapper xmlMapper = new XmlMapper();
-        return List.of(xmlMapper.readValue(response, Orders.class).getOrders());
+        Orders orders = xmlMapper.readValue(response, Orders.class);
+        if (orders.getOrders() != null) {
+            return List.of(orders.getOrders());
+        }
+        return null;
     }
 }
