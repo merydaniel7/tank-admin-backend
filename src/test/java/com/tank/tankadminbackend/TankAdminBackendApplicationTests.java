@@ -1,6 +1,13 @@
 package com.tank.tankadminbackend;
 
+import com.tank.tankadminbackend.models.unas.order.Order;
+import com.tank.tankadminbackend.models.unas.order.OrderType;
 import com.tank.tankadminbackend.services.marketingcost.*;
+import com.tank.tankadminbackend.services.unas.DailyProfitOnProductsService;
+import com.tank.tankadminbackend.services.unas.UnasAuthTokenService;
+import com.tank.tankadminbackend.services.unas.UnasOrderService;
+import com.tank.tankadminbackend.services.unas.UnasServiceConfig;
+import com.tank.tankadminbackend.util.DateHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +17,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class TankAdminBackendApplicationTests {
@@ -37,6 +48,9 @@ class TankAdminBackendApplicationTests {
 
     @Value("${lm.google.analytics.view.id}")
     String googleViewId;
+
+    @Value("${unas.lm.api.key}")
+    String lmUnasApiKey;
 
 
     @Test
@@ -86,5 +100,45 @@ class TankAdminBackendApplicationTests {
         GoogleAnalyticsService googleAnalyticsService = context.getBean(GoogleAnalyticsService.class, googleKeyFileLocation, googleViewId, "lm");
         float adCost = googleAnalyticsService.getSumOfAdCost(date);
         assertEquals(20454.353515625, adCost);
+    }
+
+
+    @Test
+    public void getUnasTokenTest() throws IOException {
+        UnasAuthTokenService unasAuthTokenService = new UnasAuthTokenService();
+        String token = unasAuthTokenService.getAuthToken(lmUnasApiKey);
+        assertNotNull(token);
+    }
+
+    @Test
+    public void getUnasOrderTest() throws IOException {
+        String date = "2022.01.09";
+        UnasAuthTokenService unasAuthTokenService = new UnasAuthTokenService();
+        String token = unasAuthTokenService.getAuthToken(lmUnasApiKey);
+        UnasOrderService orderService = new UnasOrderService();
+        List<Order> orders = orderService.getOrders(token, OrderType.close_ok.toString(), date);
+        assertNotNull(orders);
+    }
+
+
+    @Test
+    public void getProfitOnProductsTest() throws IOException, InterruptedException {
+        int minusDaysStart = 1;
+        int minusDaysEnd = 30;
+        ApplicationContext context = new AnnotationConfigApplicationContext(UnasServiceConfig.class);
+        DailyProfitOnProductsService dailyProfitOnProductsService = context.getBean(DailyProfitOnProductsService.class, lmUnasApiKey);
+        DateHelper dateHelper = new DateHelper();
+        List<String> dates = dateHelper.getDatesOfDays(minusDaysStart, minusDaysEnd);
+        UnasAuthTokenService unasAuthTokenService = new UnasAuthTokenService();
+        String token = unasAuthTokenService.getAuthToken(lmUnasApiKey);
+        List<Float> profits = new ArrayList<>();
+
+        for (String date : dates) {
+            float profit = dailyProfitOnProductsService.getDailyProfitOnProducts(token, date);
+            System.out.println(profit);
+            profits.add(profit);
+            Thread.sleep(2000);
+        }
+        assertEquals(minusDaysEnd, profits.size());
     }
 }
