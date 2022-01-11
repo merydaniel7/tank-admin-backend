@@ -2,7 +2,7 @@ package com.tank.tankadminbackend.services.unas;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.tank.tankadminbackend.models.unas.auth.Login;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,14 +12,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 
+@Component
 public class UnasAuthTokenService {
-    private final String unasApiKey;
 
-    public UnasAuthTokenService(String unasApiKey1) {
-        this.unasApiKey = unasApiKey1;
-    }
-
-    private String sendLoginXmlRequest() throws IOException {
+    private String sendLoginXmlRequest(String unasApiKey) throws IOException {
         String xmlRequest = "<?xml version='1.0' encoding='UTF-8' ?><Params><ApiKey>" + unasApiKey + "</ApiKey></Params>";
 
         URL url = new URL("https://api.unas.eu/shop/login");
@@ -53,8 +49,8 @@ public class UnasAuthTokenService {
     }
 
 
-    String getAuthToken() throws IOException {
-        String response = sendLoginXmlRequest();
+    public String getAuthToken(String unasApiKey) throws IOException {
+        String response = sendLoginXmlRequest(unasApiKey);
         XmlMapper xmlMapper = new XmlMapper();
         Login token = xmlMapper.readValue(response, Login.class);
         return token.getToken();
