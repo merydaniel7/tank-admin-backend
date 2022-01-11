@@ -14,11 +14,9 @@ import java.util.Objects;
 public class DailyProfitOnProductsService {
     private final float MIN_SHIPPING_COST;
     private float netProfit;
-    private final String unasApiKey;
 
 
-    public DailyProfitOnProductsService(String unasApiKey) {
-        this.unasApiKey = unasApiKey;
+    public DailyProfitOnProductsService() {
         this.MIN_SHIPPING_COST = 1050;
     }
 
