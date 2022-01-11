@@ -1,8 +1,8 @@
 package com.tank.tankadminbackend.repository;
 
 
-import com.tank.tankadminbackend.models.ERole;
-import com.tank.tankadminbackend.models.Role;
+import com.tank.tankadminbackend.models.user.ERole;
+import com.tank.tankadminbackend.models.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

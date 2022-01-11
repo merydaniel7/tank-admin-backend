@@ -1,6 +1,6 @@
 package com.tank.tankadminbackend.security.services;
 
-import com.tank.tankadminbackend.models.User;
+import com.tank.tankadminbackend.models.user.User;
 import com.tank.tankadminbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

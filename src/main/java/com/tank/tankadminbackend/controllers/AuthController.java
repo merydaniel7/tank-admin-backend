@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import com.tank.tankadminbackend.models.ERole;
-import com.tank.tankadminbackend.models.Role;
-import com.tank.tankadminbackend.models.User;
+import com.tank.tankadminbackend.models.user.ERole;
+import com.tank.tankadminbackend.models.user.Role;
+import com.tank.tankadminbackend.models.user.User;
 import com.tank.tankadminbackend.payload.request.LoginRequest;
 import com.tank.tankadminbackend.payload.request.SignupRequest;
 import com.tank.tankadminbackend.payload.response.JwtResponse;

@@ -1,7 +1,7 @@
 package com.tank.tankadminbackend.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tank.tankadminbackend.models.User;
+import com.tank.tankadminbackend.models.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
