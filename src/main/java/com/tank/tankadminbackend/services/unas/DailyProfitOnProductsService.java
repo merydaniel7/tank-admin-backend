@@ -22,10 +22,8 @@ public class DailyProfitOnProductsService {
         this.MIN_SHIPPING_COST = 1050;
     }
 
-    public float getDailyProfitOnProducts(String date) throws IOException {
+    public float getDailyProfitOnProducts(String token, String date) throws IOException {
         netProfit = 0;
-        UnasAuthTokenService unasGetAuthTokenService = new UnasAuthTokenService();
-        String token = unasGetAuthTokenService.getAuthToken(unasApiKey);
         UnasOrderService unasOrderService = new UnasOrderService();
         List<Order> openNormalOrders = unasOrderService.getOrders(token, OrderType.open_normal.toString(), date);
         List<Order> closedOkOrders = unasOrderService.getOrders(token, OrderType.close_ok.toString(), date);
