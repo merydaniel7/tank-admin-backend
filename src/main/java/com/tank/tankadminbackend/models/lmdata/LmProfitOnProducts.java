@@ -1,7 +1,6 @@
 package com.tank.tankadminbackend.models.lmdata;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(	name = "lmprofitonproducts",
@@ -15,5 +14,29 @@ public class LmProfitOnProducts {
 
     private String date;
 
-    private BigDecimal profit;
+    private Float profit;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Float getProfit() {
+        return profit;
+    }
+
+    public void setProfit(Float profit) {
+        this.profit = profit;
+    }
 }
