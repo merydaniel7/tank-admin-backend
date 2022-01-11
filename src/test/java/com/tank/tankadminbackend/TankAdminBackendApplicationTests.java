@@ -64,8 +64,6 @@ class TankAdminBackendApplicationTests {
         String date = "2022-01-05";
         ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
         ArgepService argepService = context.getBean(ArgepService.class, shop, argepUserName, argepPassword);
-        /*LocalDate currentDate = LocalDate.now();
-        LocalDate yesterday = currentDate.minusDays(1);*/
         LocalDate localDate = LocalDate.parse(date);
         float adCost = argepService.getSumOfAdCost(localDate);
         assertEquals(44765.0, adCost);
@@ -126,7 +124,7 @@ class TankAdminBackendApplicationTests {
         int minusDaysStart = 1;
         int minusDaysEnd = 30;
         ApplicationContext context = new AnnotationConfigApplicationContext(UnasServiceConfig.class);
-        DailyProfitOnProductsService dailyProfitOnProductsService = context.getBean(DailyProfitOnProductsService.class, lmUnasApiKey);
+        DailyProfitOnProductsService dailyProfitOnProductsService = context.getBean(DailyProfitOnProductsService.class);
         DateHelper dateHelper = new DateHelper();
         List<String> dates = dateHelper.getDatesOfDays(minusDaysStart, minusDaysEnd);
         UnasAuthTokenService unasAuthTokenService = new UnasAuthTokenService();
