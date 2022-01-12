@@ -100,9 +100,7 @@ public class DailyUpdateScheduler {
                 lmProfitOnProductsRepository.save(profitOnProducts);
             } else {
                 Optional<LmProfitOnProducts> profitOptional = lmProfitOnProductsRepository.findByDate(date);
-                profitOptional.ifPresent(profitOnProducts -> {
-                    profitOnProducts.setProfit(profit);
-                });
+                profitOptional.ifPresent(profitOnProducts -> profitOnProducts.setProfit(profit));
             }
             Thread.sleep(2000);
         }
