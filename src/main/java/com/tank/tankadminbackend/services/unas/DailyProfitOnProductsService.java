@@ -1,15 +1,19 @@
 package com.tank.tankadminbackend.services.unas;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tank.tankadminbackend.models.api.ActualMonth;
+import com.tank.tankadminbackend.models.lmdata.LmProfitOnProducts;
 import com.tank.tankadminbackend.models.unas.order.*;
+import com.tank.tankadminbackend.repository.LmProfitOnProductsRepository;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-@Component
+@Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DailyProfitOnProductsService {
     private final float MIN_SHIPPING_COST;
@@ -18,6 +22,20 @@ public class DailyProfitOnProductsService {
 
     public DailyProfitOnProductsService() {
         this.MIN_SHIPPING_COST = 1050;
+    }
+
+    public String getProfitOnProductsByMonth(String month, LmProfitOnProductsRepository lmProfitOnProductsRepository) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ActualMonth actualMonth = mapper.readValue(month, ActualMonth.class);
+        List<LmProfitOnProducts> profitOnProducts = lmProfitOnProductsRepository.findByDateStartsWith(actualMonth.getMonth());
+        List<Map<String, Float>> profits = new ArrayList<>();
+        for (LmProfitOnProducts lmProfitOnProduct : profitOnProducts) {
+            Map<String, Float> dayProfit = new HashMap<>();
+            dayProfit.put(lmProfitOnProduct.getDate(), lmProfitOnProduct.getProfit());
+            profits.add(dayProfit);
+        }
+
+        return new ObjectMapper().writeValueAsString(profits);
     }
 
     public float getDailyProfitOnProducts(String token, String date) throws IOException {
