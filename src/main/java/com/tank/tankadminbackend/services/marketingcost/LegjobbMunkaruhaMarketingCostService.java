@@ -1,13 +1,18 @@
 package com.tank.tankadminbackend.services.marketingcost;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tank.tankadminbackend.models.api.ActualMonth;
+import com.tank.tankadminbackend.models.lmdata.LmMarketingCost;
+import com.tank.tankadminbackend.repository.LmMarketingCostRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class LegjobbMunkaruhaMarketingCostService {
@@ -64,5 +69,19 @@ public class LegjobbMunkaruhaMarketingCostService {
         ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
         GoogleAnalyticsService googleAnalyticsService = context.getBean(GoogleAnalyticsService.class, googleKeyFileLocation, googleViewId, "lm");
         return googleAnalyticsService.getSumOfAdCost(date);
+    }
+
+
+    public String getMarketingCostByMonth(String month, LmMarketingCostRepository lmMarketingCostRepository) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ActualMonth actualMonth = mapper.readValue(month, ActualMonth.class);
+        List<LmMarketingCost> lmMarketingCosts = lmMarketingCostRepository.findByDateStartsWith(actualMonth.getMonth());
+        List<Map<String, Float>> costs = new ArrayList<>();
+        for (LmMarketingCost marketingCost : lmMarketingCosts) {
+            Map<String, Float> dayWithCost = new HashMap<>();
+            dayWithCost.put(marketingCost.getDate(), marketingCost.getSum());
+            costs.add(dayWithCost);
+        }
+        return new ObjectMapper().writeValueAsString(costs);
     }
 }
