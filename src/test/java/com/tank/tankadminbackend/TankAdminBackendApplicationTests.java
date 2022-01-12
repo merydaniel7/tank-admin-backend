@@ -1,7 +1,9 @@
 package com.tank.tankadminbackend;
 
+import com.tank.tankadminbackend.models.lmdata.LmMarketingCost;
 import com.tank.tankadminbackend.models.unas.order.Order;
 import com.tank.tankadminbackend.models.unas.order.OrderType;
+import com.tank.tankadminbackend.repository.LmMarketingCostRepository;
 import com.tank.tankadminbackend.services.marketingcost.*;
 import com.tank.tankadminbackend.services.unas.DailyProfitOnProductsService;
 import com.tank.tankadminbackend.services.unas.UnasAuthTokenService;
@@ -9,6 +11,7 @@ import com.tank.tankadminbackend.services.unas.UnasOrderService;
 import com.tank.tankadminbackend.services.unas.UnasServiceConfig;
 import com.tank.tankadminbackend.util.DateHelper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -51,6 +54,9 @@ class TankAdminBackendApplicationTests {
 
     @Value("${unas.lm.api.key}")
     String lmUnasApiKey;
+
+    @Autowired
+    LmMarketingCostRepository lmMarketingCostRepository;
 
 
     @Test
@@ -138,5 +144,13 @@ class TankAdminBackendApplicationTests {
             Thread.sleep(2000);
         }
         assertEquals(minusDaysEnd, profits.size());
+    }
+
+    @Test
+    public void getMarketingCostByMonth() {
+        int expected = 1;
+        List<LmMarketingCost> marketingCosts = lmMarketingCostRepository.findByDateStartsWith("2022-01");
+
+        assertEquals(expected, marketingCosts.size());
     }
 }
