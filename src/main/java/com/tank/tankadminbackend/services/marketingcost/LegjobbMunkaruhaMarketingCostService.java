@@ -70,18 +70,4 @@ public class LegjobbMunkaruhaMarketingCostService {
         GoogleAnalyticsService googleAnalyticsService = context.getBean(GoogleAnalyticsService.class, googleKeyFileLocation, googleViewId, "lm");
         return googleAnalyticsService.getSumOfAdCost(date);
     }
-
-
-    public String getMarketingCostByMonth(String month, LmMarketingCostRepository lmMarketingCostRepository) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        ActualMonth actualMonth = mapper.readValue(month, ActualMonth.class);
-        List<LmMarketingCost> lmMarketingCosts = lmMarketingCostRepository.findByDateStartsWith(actualMonth.getMonth());
-        List<Map<String, Float>> costs = new ArrayList<>();
-        for (LmMarketingCost marketingCost : lmMarketingCosts) {
-            Map<String, Float> dayWithCost = new HashMap<>();
-            dayWithCost.put(marketingCost.getDate(), marketingCost.getSum());
-            costs.add(dayWithCost);
-        }
-        return new ObjectMapper().writeValueAsString(costs);
-    }
 }
