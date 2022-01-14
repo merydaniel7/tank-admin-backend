@@ -18,7 +18,7 @@ public class MarketingCostService {
     @Autowired
     LmMarketingCostRepository lmMarketingCostRepository;
 
-    public String getMarketingCostByMonth(String month) throws JsonProcessingException {
+    public String getLegjobbMunkaruhaMarketingCostByMonth(String month) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ActualMonth actualMonth = mapper.readValue(month, ActualMonth.class);
         List<LmMarketingCost> lmMarketingCosts = lmMarketingCostRepository.findByDateStartsWith(actualMonth.getMonth());
