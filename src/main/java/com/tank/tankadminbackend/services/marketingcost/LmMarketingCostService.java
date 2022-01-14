@@ -1,10 +1,5 @@
 package com.tank.tankadminbackend.services.marketingcost;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tank.tankadminbackend.models.api.ActualMonth;
-import com.tank.tankadminbackend.models.lmdata.LmMarketingCost;
-import com.tank.tankadminbackend.repository.LmMarketingCostRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,10 +7,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
-import java.util.*;
 
 @Service
-public class LegjobbMunkaruhaMarketingCostService {
+public class LmMarketingCostService {
     @Value("${lm.facebook.access.token}")
     String facebookAccessToken;
 
