@@ -4,7 +4,7 @@ import com.tank.tankadminbackend.models.lmdata.LmMarketingCost;
 import com.tank.tankadminbackend.models.lmdata.LmProfitOnProducts;
 import com.tank.tankadminbackend.repository.LmMarketingCostRepository;
 import com.tank.tankadminbackend.repository.LmProfitOnProductsRepository;
-import com.tank.tankadminbackend.services.marketingcost.LegjobbMunkaruhaMarketingCostService;
+import com.tank.tankadminbackend.services.marketingcost.LmMarketingCostService;
 import com.tank.tankadminbackend.services.unas.DailyProfitOnProductsService;
 import com.tank.tankadminbackend.services.unas.UnasAuthTokenService;
 import com.tank.tankadminbackend.util.DateHelper;
@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 public class DailyUpdateScheduler {
 
-    private final LegjobbMunkaruhaMarketingCostService legjobbMunkaruhaMarketingCostService;
+    private final LmMarketingCostService lmMarketingCostService;
     private final LmMarketingCostRepository lmMarketingCostRepository;
     private final LmProfitOnProductsRepository lmProfitOnProductsRepository;
     private final DailyProfitOnProductsService dailyProfitOnProductsService;
@@ -33,8 +33,8 @@ public class DailyUpdateScheduler {
 
 
     @Autowired
-    public DailyUpdateScheduler(LegjobbMunkaruhaMarketingCostService legjobbMunkaruhaMarketingCostService, DailyProfitOnProductsService dailyProfitOnProductsService, LmMarketingCostRepository lmMarketingCostRepository, LmProfitOnProductsRepository lmProfitOnProductsRepository, UnasAuthTokenService unasAuthTokenService, DateHelper dateHelper) {
-        this.legjobbMunkaruhaMarketingCostService = legjobbMunkaruhaMarketingCostService;
+    public DailyUpdateScheduler(LmMarketingCostService lmMarketingCostService, DailyProfitOnProductsService dailyProfitOnProductsService, LmMarketingCostRepository lmMarketingCostRepository, LmProfitOnProductsRepository lmProfitOnProductsRepository, UnasAuthTokenService unasAuthTokenService, DateHelper dateHelper) {
+        this.lmMarketingCostService = lmMarketingCostService;
         this.dailyProfitOnProductsService = dailyProfitOnProductsService;
         this.lmMarketingCostRepository = lmMarketingCostRepository;
         this.lmProfitOnProductsRepository = lmProfitOnProductsRepository;
@@ -47,16 +47,16 @@ public class DailyUpdateScheduler {
     public void saveMarketingCost() throws IOException, InterruptedException, GeneralSecurityException {
         String date = dateHelper.getYesterdayString();
         float sumAdCost = 0;
-        float argepAdCost = legjobbMunkaruhaMarketingCostService.getArgepAdCost(date);
+        float argepAdCost = lmMarketingCostService.getArgepAdCost(date);
         System.out.println("Argep: " + argepAdCost);
         sumAdCost += argepAdCost;
-        float arukeresoAdCost = legjobbMunkaruhaMarketingCostService.getArukeresoAdCost(date);
+        float arukeresoAdCost = lmMarketingCostService.getArukeresoAdCost(date);
         System.out.println("Arukereso: " + arukeresoAdCost);
         sumAdCost += arukeresoAdCost;
-        float facebookAdCost = legjobbMunkaruhaMarketingCostService.getFacebookAdCost(date);
+        float facebookAdCost = lmMarketingCostService.getFacebookAdCost(date);
         System.out.println("Facebook: " + facebookAdCost);
         sumAdCost += facebookAdCost;
-        float googleAdCost = legjobbMunkaruhaMarketingCostService.getGoogleAdCost(date);
+        float googleAdCost = lmMarketingCostService.getGoogleAdCost(date);
         System.out.println("Google: " + googleAdCost);
         sumAdCost += googleAdCost;
         System.out.println("Sum of ad cost - "+ date + " : " + sumAdCost);
