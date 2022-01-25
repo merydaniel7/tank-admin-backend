@@ -36,4 +36,8 @@ public class DateHelper {
         return dates;
     }
 
+    public String convertDateToLineFormat(String date) {
+        return String.join("-", date.split("\\."));
+    }
+
 }

@@ -92,14 +92,15 @@ public class DailyUpdateScheduler {
 
         for (String date : dates) {
             float profit = dailyProfitOnProductsService.getDailyProfitOnProducts(token, date);
-            System.out.println("Profit - "+ date + " : " + profit);
-            if (!lmProfitOnProductsRepository.existsByDate(date)) {
+            String lineDate = dateHelper.convertDateToLineFormat(date);
+            System.out.println("Profit - "+ lineDate + " : " + profit);
+            if (!lmProfitOnProductsRepository.existsByDate(lineDate)) {
                 LmProfitOnProducts profitOnProducts = new LmProfitOnProducts();
                 profitOnProducts.setProfit(profit);
-                profitOnProducts.setDate(date);
+                profitOnProducts.setDate(lineDate);
                 lmProfitOnProductsRepository.save(profitOnProducts);
             } else {
-                Optional<LmProfitOnProducts> profitOptional = lmProfitOnProductsRepository.findByDate(date);
+                Optional<LmProfitOnProducts> profitOptional = lmProfitOnProductsRepository.findByDate(lineDate);
                 profitOptional.ifPresent(profitOnProducts -> profitOnProducts.setProfit(profit));
             }
             Thread.sleep(2000);
