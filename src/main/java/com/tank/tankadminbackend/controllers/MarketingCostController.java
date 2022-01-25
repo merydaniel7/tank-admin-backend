@@ -18,4 +18,9 @@ public class MarketingCostController {
     public String getMarketingCost(@Valid @RequestBody String month) throws JsonProcessingException {
         return marketingCostService.getLegjobbMunkaruhaMarketingCostByMonth(month);
     }
+
+    @GetMapping("/months")
+    public String getMonths() throws JsonProcessingException {
+        return marketingCostService.getMonths();
+    }
 }
