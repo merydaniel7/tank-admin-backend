@@ -149,7 +149,7 @@ class TankAdminBackendApplicationTests {
     @Test
     public void getMarketingCostByMonth() {
         int expected = 1;
-        List<LmMarketingCost> marketingCosts = lmMarketingCostRepository.findByDateStartsWith("2022-01");
+        List<LmMarketingCost> marketingCosts = lmMarketingCostRepository.findByDateStartsWithOrderById("2022-01");
 
         assertEquals(expected, marketingCosts.size());
     }
