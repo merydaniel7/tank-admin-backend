@@ -13,5 +13,5 @@ public interface LmProfitOnProductsRepository extends JpaRepository<LmProfitOnPr
 
     Optional<LmProfitOnProducts> findByDate(String date);
 
-    List<LmProfitOnProducts> findByDateStartsWith(String month);
+    List<LmProfitOnProducts> findByDateStartsWithOrderById(String month);
 }

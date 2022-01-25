@@ -21,7 +21,7 @@ public class ProfitOnProductsService {
     public String getLegjobbMunkaruhaProfitOnProductsByMonth(String month) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ActualMonth actualMonth = mapper.readValue(month, ActualMonth.class);
-        List<LmProfitOnProducts> profitOnProducts = lmProfitOnProductsRepository.findByDateStartsWith(actualMonth.getMonth());
+        List<LmProfitOnProducts> profitOnProducts = lmProfitOnProductsRepository.findByDateStartsWithOrderById(actualMonth.getMonth());
         List<Map<String, Float>> profits = new ArrayList<>();
         for (LmProfitOnProducts lmProfitOnProduct : profitOnProducts) {
             Map<String, Float> dayProfit = new HashMap<>();
