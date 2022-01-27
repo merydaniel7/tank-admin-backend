@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class DateHelper {
 
     public String convertDateToLineFormat(String date) {
         return String.join("-", date.split("\\."));
+    }
+
+    public String getNextMonth() {
+        return LocalDate.now()
+                .with(TemporalAdjusters.firstDayOfNextMonth())
+                .format(DateTimeFormatter.ofPattern("yyyy-MM"));
     }
 
 }
