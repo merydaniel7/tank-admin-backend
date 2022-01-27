@@ -1,21 +1,37 @@
 spring.datasource.url= jdbc:postgresql://localhost:5432/tank-admin-db
-spring.datasource.username =
-spring.datasource.password =
+spring.datasource.username=
+spring.datasource.password=
 
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation = true
-spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation= true
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect
 
 # Hibernate ddl auto (create, create-drop, validate, update)
-spring.jpa.hibernate.ddl-auto = update
+spring.jpa.hibernate.ddl-auto= update
 
 # App Properties
-tank.app.jwtSecret = tankAdminSecretKey
-tank.app.jwtExpirationMs = 86400000
+tank.app.jwtSecret= tankAdminSecretKey
+tank.app.jwtExpirationMs= 86400000
 
 #Google Analytics Report v4
 lm.google.analytics.view.id =
 lm.google.analytics.key.file.location = src/main/resources/static/lm-google-api-key.json
 
-# Unas API Keys
+# Unas API
 unas.lm.api.key =
+
+# Arukereso API
 arukereso.lm.api.key =
+
+# Facebook API
+lm.facebook.access.token =
+lm.facebook.app.secret =
+lm.facebook.ad.account.id =
+
+# Argep
+lm.argep.user =
+lm.argep.password =
+
+
+schedule.cron.cost=0 0 3 * * ?
+schedule.cron.profit=0 30 3 * * ?
+schedule.cron.fixedcosts=0 0 2 28 * ?
