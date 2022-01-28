@@ -19,13 +19,13 @@ import java.util.Objects;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ArgepService {
+public class ArgepServiceWebDriver {
     private float sumAdCoast;
     private final String shop;
     private final String userName;
     private final String password;
 
-    public ArgepService(String shop, String userName, String password) {
+    public ArgepServiceWebDriver(String shop, String userName, String password) {
         this.shop = shop;
         this.userName = userName;
         this.password = password;
@@ -33,7 +33,7 @@ public class ArgepService {
     }
 
 
-    private WebDriver getDriver() {
+   private WebDriver getDriver() {
         String exePath = "C:\\Windows\\chromedriver.exe";
         System.setProperty("webdriver.chrome.driver", exePath);
         ChromeOptions options = new ChromeOptions();
