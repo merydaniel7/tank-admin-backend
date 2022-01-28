@@ -69,9 +69,9 @@ class TankAdminBackendApplicationTests {
         String shop = "legjobbmunkaruha";
         String date = "2022-01-05";
         ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
-        ArgepService argepService = context.getBean(ArgepService.class, shop, argepUserName, argepPassword);
+        ArgepServiceWebDriver argepServiceWebDriver = context.getBean(ArgepServiceWebDriver.class, shop, argepUserName, argepPassword);
         LocalDate localDate = LocalDate.parse(date);
-        float adCost = argepService.getSumOfAdCost(localDate);
+        float adCost = argepServiceWebDriver.getSumOfAdCost(localDate);
         assertEquals(44765.0, adCost);
     }
 
