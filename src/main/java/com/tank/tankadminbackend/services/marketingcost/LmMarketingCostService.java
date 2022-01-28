@@ -34,14 +34,36 @@ public class LmMarketingCostService {
     @Value("${lm.google.analytics.view.id}")
     String googleViewId;
 
+    @Value("${lm.argep.ftp.cpc}")
+    String lmArgepCPC;
 
-    public float getArgepAdCost(String date) {
+    @Value("${lm.argep.ftp.gs}")
+    String lmArgepGS;
+
+    @Value("${argep.ftp.url}")
+    String argepFTPUrl;
+
+    @Value("${argep.ftp.user}")
+    String argepFTPUserName;
+
+    @Value("${argep.ftp.password}")
+    String argepFTPPassword;
+
+
+    /*public float getArgepAdCostWebDriver(String date) {
         String shop = "legjobbmunkaruha";
         ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
-        ArgepService argepService = context.getBean(ArgepService.class, shop, argepUserName, argepPassword);
+        ArgepServiceWebDriver argepServiceWebDriver = context.getBean(ArgepServiceWebDriver.class, shop, argepUserName, argepPassword);
         LocalDate localDate = LocalDate.parse(date);
-        return argepService.getSumOfAdCost(localDate);
+        return argepServiceWebDriver.getSumOfAdCost(localDate);
+    }*/
+
+    public float getArgepAdCostFTP(String date) throws IOException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(MarketingCostConfig.class);
+        ArgepServiceFTP argepServiceFTP = context.getBean(ArgepServiceFTP.class, lmArgepCPC, lmArgepGS, argepFTPUrl, argepUserName, argepPassword);
+        return argepServiceFTP.getSumOfAdCost(date);
     }
+
 
 
     public float getArukeresoAdCost(String date) throws IOException, InterruptedException {
