@@ -17,6 +17,12 @@ public class DateHelper {
         return yesterday.toString();
     }
 
+    public String getYesterdayStringInOne() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate yesterday = currentDate.minusDays(1);
+        return yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
+
     public List<String> getDatesOfDays(int minusDaysStart, int minusDaysEnd) {
         List<String> dates = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
