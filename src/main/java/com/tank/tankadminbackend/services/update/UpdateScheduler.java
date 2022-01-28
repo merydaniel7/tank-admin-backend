@@ -49,9 +49,11 @@ public class UpdateScheduler {
     @Scheduled(cron = "${schedule.cron.cost}")
     @Transactional
     public void saveMarketingCost() throws IOException, InterruptedException, GeneralSecurityException {
+        // Have to schedule it after 12:00, because Argep uploads the file that time!
         String date = dateHelper.getYesterdayString();
+        String dateInOne = dateHelper.getYesterdayStringInOne();
         float sumAdCost = 0;
-        float argepAdCost = lmMarketingCostService.getArgepAdCost(date);
+        float argepAdCost = lmMarketingCostService.getArgepAdCostFTP(dateInOne);
         System.out.println("Argep: " + argepAdCost);
         sumAdCost += argepAdCost;
         float arukeresoAdCost = lmMarketingCostService.getArukeresoAdCost(date);
