@@ -23,7 +23,7 @@ import com.tank.tankadminbackend.repository.RoleRepository;
 import com.tank.tankadminbackend.repository.UserRepository;
 import com.tank.tankadminbackend.security.jwt.JwtUtils;
 import com.tank.tankadminbackend.security.services.UserDetailsImpl;
-import com.tank.tankadminbackend.services.RefreshTokenService;
+import com.tank.tankadminbackend.security.services.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -62,7 +62,6 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -160,7 +159,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@Valid @RequestBody LogOutRequest logOutRequest) {
-        refreshTokenService.deleteByUserId(logOutRequest.getUserId());
-        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
+        refreshTokenService.deleteByUserName(logOutRequest.getUsername());
+        return ResponseEntity.ok(new MessageResponse("Logout successful!"));
     }
 }
