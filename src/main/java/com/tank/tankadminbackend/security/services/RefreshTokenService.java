@@ -1,4 +1,4 @@
-package com.tank.tankadminbackend.services;
+package com.tank.tankadminbackend.security.services;
 
 import com.tank.tankadminbackend.exception.TokenRefreshException;
 import com.tank.tankadminbackend.models.user.RefreshToken;
